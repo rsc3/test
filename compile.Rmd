@@ -1,0 +1,71 @@
+---
+title: "compile plate reader data"
+author: "Cameron Strachan"
+date: "August 4, 2016"
+output: html_document
+---
+
+```{r}
+library(reshape2)
+library(ggplot2)
+library(gridExtra)
+library(RColorBrewer)
+library(tidyr)
+DAT <- read.csv("~/Desktop/170119 hep screen 5mM 20hr.csv")
+head(data)
+```
+
+```{r}
+plates <- 25*100*2
+i <- seq(23, plates, by = 58)
+j <- seq(48, plates, by = 58)
+
+
+fu85 <- DAT[i,]
+fu85 <- na.omit(fu85)
+fu85 <- as.data.frame(fu85)
+
+
+fu90 <- DAT[j,]
+fu90 <- na.omit(fu90)
+fu90 <- as.data.frame(fu90)
+```
+
+```{r}
+names <-DAT[22,]
+names[,1] <- list(NULL)
+colnames = as.character(unlist(names[1,]))
+colnames(fu85)[2:ncol(fu85)] <- colnames
+colnames(fu85)[1] <- c("Plate")
+
+
+
+write.csv(fu85, "~/Desktop/170119 hep 5mM od compiled.csv")
+write.csv(fu90, "~/Desktop/170119 hep 5mM gfp compiled.csv")
+
+data <- read.csv("~/Desktop/160902_Screen_Comp.csv")
+
+d_fu <- fu
+d_fu <- separate(d_fu, col = Plate, into = c("Plate", "Treatment"), sep = "\\(")
+d_fu <- separate(d_fu, col = Treatment, into = c("Treatment", "rm", sep = "\\)"))
+d_fu[,c(3,4)] <- list(NULL)
+
+
+
+
+data$Treatment[c(4,9)] <- "e"
+
+eth <- subset(data, data$Treatment == "e")
+bis <- subset(data, data$Treatment == "b")
+pim <- subset(data, data$Treatment == "p")
+hep <- subset(data, data$Treatment == "h")
+wat <- subset(data, data$Treatment == "water")
+
+bis_fold <- bis / 
+
+write.csv(d_fu, "~/Desktop/161007_7aminoheptanoic_MM.csv")
+write.csv(d_od, "~/Desktop/161005_hep_od6.csv")
+
+
+
+```
