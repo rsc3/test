@@ -11,19 +11,27 @@ library(ggplot2)
 library(gridExtra)
 library(RColorBrewer)
 library(tidyr)
-DAT <- read.csv("~/Desktop/170119 hep screen 5mM 20hr.csv")
+
+print("loading compile_inputs.csv from the current working directory")
+getwd()
+
+INPUTS <- read.csv("compile_inputs.csv")
+inputfiles <- INPUTS[,1]=="File" 
+datfilenames<- INPUTS[inputfiles,2] # the list of inputs that are data files to be loaded
+datfilenames<- unique(datfilenames) # remove duplicates (mistakes)
+DAT<- read.csv(as.character(datfilenames[1]))
 head(data)
 ```
 
 ```{r}
 plates <- 25*100*2
-i <- seq(23, plates, by = 58)
+i <- seq(29, plates, by = 58)
 j <- seq(48, plates, by = 58)
 
 
 fu85 <- DAT[i,]
-fu85 <- na.omit(fu85)
-fu85 <- as.data.frame(fu85)
+fu85 <- na.omit(fu85) # remove NA values
+fu85 <- as.data.frame(fu85) #check to make sure its a data frame
 
 
 fu90 <- DAT[j,]
